@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -9,10 +10,30 @@ var usersRouter = require('./routes/users');
 var billApiRouter = require('./routes/billApi');
 var testApiRouter = require('./routes/testApi');
 
+var corsOptions = {
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'X-Access-Token',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Methods'
+  ],
+  credentials: true,
+  origin: 'http://localhost:8100',
+  optionsSuccessStatus: 200, // For legacy browser support
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+  //methods: "GET, PUT"
+}
+
 var app = express();
 var port = 8000;
 app.listen(port);
 console.log('server started');
+
+app.use(cors(corsOptions))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
